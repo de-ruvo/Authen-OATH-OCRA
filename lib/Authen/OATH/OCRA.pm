@@ -139,14 +139,14 @@ sub ocra {
 
     #Validate that min required parameters are present
     croak "Parameter \"ocrasuite\" is required"
-        unless defined( $self->{ocrasuite} );
+      unless defined( $self->{ocrasuite} );
     croak "Parameter \"question\" is required"
-        unless defined( $self->{question} );
+      unless defined( $self->{question} );
     croak "Parameter \"key\" is required" unless defined( $self->{key} );
 
     #Validate the OCRA Suite format and parse sub parameters into variables
     croak "Invalid ocrasuite"
-        unless $self->{ocrasuite} =~ /^
+      unless $self->{ocrasuite} =~ /^
                                       OCRA-1:HOTP-SHA
                                       (1|256|512)-
                                       (\d+):
@@ -176,19 +176,19 @@ sub ocra {
     #Validate if additional parameters required
     #in the provided OCRA Suite are present
     croak "Parameter \"counter\" is required for the provided ocrasuite"
-        if $has_counter && !defined( $self->{counter} );
+      if $has_counter && !defined( $self->{counter} );
     croak "Parameter \"password\" is required for the provided ocrasuite"
-        if $has_password && !defined( $self->{password} );
+      if $has_password && !defined( $self->{password} );
     croak
-        "Parameter \"session_information\" is required for the provided ocrasuite"
-        if $has_session && !defined( $self->{session_information} );
+      "Parameter \"session_information\" is required for the provided ocrasuite"
+      if $has_session && !defined( $self->{session_information} );
 
     #Initiate the data input with the Ocra Suite and the separator byte
     my $datainput = $self->ocrasuite . "\0";
 
     #Concatenate encoded Counter padded with 8 zeros at left
     $datainput .= _hex_to_bytes( _dec_to_hex( $self->counter ), 8 )
-        if $has_counter;
+      if $has_counter;
 
     #Encode the Question on the specified format
     my $question;
@@ -199,19 +199,19 @@ sub ocra {
     #Concatenate encoded Question padded with 128 zeros at right
     $datainput .= pack( "H*",
         _check_hex($question)
-            . "\0" x ( 256 - length( _check_hex($question) ) ) );
+          . "\0" x ( 256 - length( _check_hex($question) ) ) );
 
-    #Concatenate encoded password and  pad with zeros 
+    #Concatenate encoded password and  pad with zeros
     #to the left depending on the specified SHA
     my %password_size = ( 1 => 20, 256 => 32, 512 => 64 );
-    $datainput
-        .= _hex_to_bytes( $self->password, $password_size{$password_format} )
-        if $has_password;
+    $datainput .=
+      _hex_to_bytes( $self->password, $password_size{$password_format} )
+      if $has_password;
 
     #Concatenate encoded Session Information padded with zeros at left
-    $datainput .= _hex_to_bytes( _str_to_hex( $self->session_information ),
-        $session_size )
-        if $has_session;
+    $datainput .=
+      _hex_to_bytes( _str_to_hex( $self->session_information ), $session_size )
+      if $has_session;
 
     #Assign timestamp value
     if ($has_timestamp) {
@@ -237,15 +237,18 @@ sub ocra {
     my $key = pack( 'H*', _check_hex( $self->key ) );
 
     #Compute the HMAC
+    my %hmac_sha = (
+        "1"   => \&hmac_sha1,
+        "256" => \&hmac_sha256,
+        "512" => \&hmac_sha512,
+    );
+
     my $hash;
-    {
-        no strict 'refs';
-        $hash = &{"hmac_sha$sha"}( $datainput, $key );
-    }
+    $hash = &{ $hmac_sha{$sha} }( $datainput, $key );
 
     #Dynamic Truncation
     my $offset = hex substr unpack( "H*", $hash ), -1;
-    my $dt = unpack "N" => substr $hash, $offset, 4;
+    my $dt     = unpack "N" => substr $hash, $offset, 4;
     $dt &= 0x7fffffff;
     $dt = Math::BigInt->new($dt);
     my $modulus = 10**$digits;
@@ -273,7 +276,8 @@ sub _dec_to_hex {
 sub _check_hex {
     my ($num) = @_;
 
-    if ($num =~ s/
+    if (
+        $num =~ s/
                      ^
                      ( [+-]? )
                      (0?x)?
@@ -283,7 +287,7 @@ sub _check_hex {
                      )
                      $
                  //x
-        )
+      )
     {
 
         return $3;
@@ -304,7 +308,7 @@ sub _hex_to_bytes {
 
 =head1 AUTHOR
 
-Pascual De Ruvo, C<< <pderuvo at gmail.com> >>
+Daniel De Ruvo, C<< <deruvo at gmail.com> >>
 
 =head1 BUGS
 
@@ -352,7 +356,7 @@ L<http://search.cpan.org/dist/Authen-OATH-OCRA/>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2012 Pascual De Ruvo.
+Copyright 2024 Daniel De Ruvo.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published

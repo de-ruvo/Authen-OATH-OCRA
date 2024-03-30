@@ -3,9 +3,9 @@ Authen-OATH-OCRA
 This is an implementation of the OATH Challenge Response Algorithm
 as defined by OATH (http://www.openautentication.org).
 
-Please note that some of the code was influenced by the 
-Authen::OATH module. 
-I am indebted to Kurt Kinkaid 
+Please note that some of the code was influenced by the
+Authen::OATH module.
+I am indebted to Kurt Kinkaid
 who wrote the Authen::OATH module.
 
 INSTALLATION
@@ -44,7 +44,7 @@ You can also look for information at:
 
 LICENSE AND COPYRIGHT
 
-Copyright (C) 2012 Pascual De Ruvo
+Copyright (C) 2024 Daniel De Ruvo
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published

@@ -7,7 +7,7 @@ use Module::Build;
 my $builder = Module::Build->new(
     module_name       => 'Authen::OATH::OCRA',
     license           => 'perl',
-    dist_author       => q{Pascual De Ruvo <pderuvo@gmail.com>},
+    dist_author       => q{Daniel De Ruvo <deruvo@gmail.com>},
     dist_version_from => 'lib/Authen/OATH/OCRA.pm',
     build_requires    => {
         'Test::More'      => 0,
