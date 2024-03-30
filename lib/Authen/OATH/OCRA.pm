@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 package Authen::OATH::OCRA;
-use warnings;
 use strict;
+use warnings;
 use Math::BigInt;
 use Moose;
 use Carp;
