@@ -4,10 +4,9 @@ use Test::Exception;
 use strict;
 
 my $key20 = '3132333435363738393031323334353637383930';
-my $key32
-    = '3132333435363738393031323334353637383930313233343536373839303132';
-my $key64
-    = '31323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334';
+my $key32 = '3132333435363738393031323334353637383930313233343536373839303132';
+my $key64 =
+'31323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334';
 my $pin = '7110eda4d09e062aa5e4a390b0a572ac0d2c0220';
 
 my $oath = Authen::OATH::OCRA->new(
@@ -15,8 +14,7 @@ my $oath = Authen::OATH::OCRA->new(
     ocrasuite => 'OCRA-1:HOTP-SHA1-6:QN08',
     key       => $key20,
 );
-throws_ok { $oath->ocra() } qr/Parameter "question" is required/,
-    'No question';
+throws_ok { $oath->ocra() } qr/Parameter "question" is required/, 'No question';
 
 $oath = Authen::OATH::OCRA->new(
 
@@ -32,7 +30,7 @@ $oath = Authen::OATH::OCRA->new(
     question  => '1234'
 );
 throws_ok { $oath->ocra() } qr/Must request at least 4 digits/,
-    'More digits than allowed';
+  'More digits than allowed';
 
 $oath = Authen::OATH::OCRA->new(
     ocrasuite => 'OCRA-1:HOTP-SHA1-11:QN08',
@@ -40,7 +38,7 @@ $oath = Authen::OATH::OCRA->new(
     question  => '1234'
 );
 throws_ok { $oath->ocra() } qr/Must request at most 10 digits/,
-    'Fewer digits than allowed';
+  'Fewer digits than allowed';
 
 $oath = Authen::OATH::OCRA->new(
     ocrasuite => 'OCRA-1:HOTP-SHA1-6:QN08',
@@ -52,7 +50,7 @@ $oath = Authen::OATH::OCRA->new(
     question => '1234'
 );
 throws_ok { $oath->ocra() } qr/Parameter "ocrasuite" is required/,
-    'No ocrasuite';
+  'No ocrasuite';
 
 $oath = Authen::OATH::OCRA->new(
 
@@ -61,8 +59,7 @@ $oath = Authen::OATH::OCRA->new(
     question  => '1234'
 );
 throws_ok { $oath->ocra() }
-qr/Parameter "password" is required for the provided ocrasuite/,
-    'No password';
+qr/Parameter "password" is required for the provided ocrasuite/, 'No password';
 
 $oath = Authen::OATH::OCRA->new(
 
@@ -80,7 +77,7 @@ $oath = Authen::OATH::OCRA->new(
 );
 throws_ok { $oath->ocra() }
 qr/Parameter "session_information" is required for the provided ocrasuite/,
-    'No session_information';
+  'No session_information';
 
 $oath = Authen::OATH::OCRA->new(
 
@@ -89,6 +86,5 @@ $oath = Authen::OATH::OCRA->new(
     question  => 'THIS_IS_NO_HEX'
 );
 throws_ok { $oath->ocra() }
-qr/: not in hex format/,
-    'No hex format';
+qr/: not in hex format/, 'No hex format';
 

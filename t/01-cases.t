@@ -2,10 +2,9 @@ use Authen::OATH::OCRA;
 use Test::More tests => 72;
 use strict;
 my $key20 = '3132333435363738393031323334353637383930';
-my $key32
-    = '3132333435363738393031323334353637383930313233343536373839303132';
-my $key64
-    = '31323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334';
+my $key32 = '3132333435363738393031323334353637383930313233343536373839303132';
+my $key64 =
+'31323334353637383930313233343536373839303132333435363738393031323334353637383930313233343536373839303132333435363738393031323334';
 my $pin = '7110eda4d09e062aa5e4a390b0a572ac0d2c0220';
 
 my $testvectors = [
@@ -53,11 +52,12 @@ $oath = Authen::OATH::OCRA->new(
 foreach ( @{$testvectors} ) {
     $oath->question( $_->{question} );
     $oath->counter( $_->{counter} );
-    ok( $oath->ocra() eq $_->{ocra},
+    ok(
+        $oath->ocra() eq $_->{ocra},
         'OCRA-1:HOTP-SHA512-8:C-QN08 with counter '
-            . $_->{counter}
-            . ' and question '
-            . $_->{question}
+          . $_->{counter}
+          . ' and question '
+          . $_->{question}
     );
 }
 
@@ -83,11 +83,12 @@ $oath = Authen::OATH::OCRA->new(
 foreach ( @{$testvectors} ) {
     $oath->question( $_->{question} );
     $oath->counter( $_->{counter} );
-    ok( $oath->ocra() eq $_->{ocra},
+    ok(
+        $oath->ocra() eq $_->{ocra},
         'OCRA-1:HOTP-SHA256-8:C-QN08-PSHA1 with counter '
-            . $_->{counter}
-            . ' and question '
-            . $_->{question}
+          . $_->{counter}
+          . ' and question '
+          . $_->{question}
     );
 }
 
@@ -127,11 +128,12 @@ $oath = Authen::OATH::OCRA->new(
 foreach ( @{$testvectors} ) {
     $oath->timestamp( $_->{time} );
     $oath->question( $_->{question} );
-    ok( $oath->ocra() eq $_->{ocra},
+    ok(
+        $oath->ocra() eq $_->{ocra},
         'OCRA-1:HOTP-SHA512-8:QN08-T1M with timestamp '
-            . $_->{time}
-            . ' and question '
-            . $_->{question}
+          . $_->{time}
+          . ' and question '
+          . $_->{question}
     );
 }
 
@@ -241,11 +243,12 @@ $oath = Authen::OATH::OCRA->new(
 foreach ( @{$testvectors} ) {
     $oath->timestamp( $_->{time} );
     $oath->question( $_->{question} );
-    ok( $oath->ocra() eq $_->{ocra},
+    ok(
+        $oath->ocra() eq $_->{ocra},
         'OCRA-1:HOTP-SHA512-8:QN08-T1M with timestamp '
-            . $_->{time}
-            . ' and question '
-            . $_->{question}
+          . $_->{time}
+          . ' and question '
+          . $_->{question}
     );
 }
 
@@ -256,10 +259,10 @@ $oath = Authen::OATH::OCRA->new(
     session_information => '1234567890'
 );
 ok( $oath->ocra(),
-          'OCRA-1:HOTP-SHA1-6:QH08-S10 with session_information '
-        . $oath->session_information
-        . ' and question '
-        . $oath->question );
+        'OCRA-1:HOTP-SHA1-6:QH08-S10 with session_information '
+      . $oath->session_information
+      . ' and question '
+      . $oath->question );
 $oath = Authen::OATH::OCRA->new(
     ocrasuite => 'OCRA-1:HOTP-SHA1-6:QH32-T1H',
     question  => 'cafe',
